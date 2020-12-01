@@ -22,12 +22,12 @@ def load_checkpoint(args):
     # Freeze parameters so we don't backprop through them
     for param in model.parameters():
         param.requires_grad = False    # define classifier architecture
- 
+
     checkpoint = torch.load(args.load_state_file)
     classifier_arch = checkpoint['architecture']
     classifier = nn.Sequential(classifier_arch)
     classifier.load_state_dict(checkpoint['state_dict'])
-    print('model loaded from file:   {args.load_state_file}')
+    print(f'model loaded from file:   {args.load_state_file}')
     return classifier
 #model.classifier = load_checkpoint(state_file_path)
 #model.classifier

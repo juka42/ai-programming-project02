@@ -38,7 +38,7 @@ def define_model(args, n_outputs):
     # Freeze parameters so we don't backprop through them
     for param in model.parameters():
         param.requires_grad = False    # define classifier architecture
-        
+
     num_inputs = {'alexnet': 9216,'vgg':25088,'densenet':1024}
        ### classifier_arch defines an ordinary dict with the model architecture
     classifier_architecture = classifier_arch(num_inputs[args.arch], n_outputs, args.hidden_units)
@@ -97,8 +97,8 @@ def calculate_accuracy(model, loader, device, _criterion = nn.NLLLoss()):
     criterion = _criterion
     loss = 0
     accuracy = 0
-    model.eval()
     model = model.to(device)
+    model.eval()
     with torch.no_grad():
         for inputs, labels in loader:
             inputs, labels = inputs.to(device), labels.to(device)

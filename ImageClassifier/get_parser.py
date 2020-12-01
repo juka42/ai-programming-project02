@@ -15,7 +15,7 @@ def get_input_args():
                         help='file with dictionary from classes to text labels')
 
     # model architecture and optimization options
-    parser.add_argument('--arch', type=str, default = 'vgg',
+    parser.add_argument('--arch', type=str, default = 'densenet',
                         help = 'Select NN architecture: densenet, vgg or alexnet')
     parser.add_argument('--learning_rate', type=float, default = 0.002,
                         help='select learning ratte. Default = 0.01')
@@ -23,13 +23,15 @@ def get_input_args():
                         help='number of hidden units (e.g. "523, 128") Def: 512')
     parser.add_argument('--epochs', type = int, default = 1 ,
                         help='Select number of epochs. Default = 20')
+    parser.add_argument('--printevery', type = int, default = 32 ,
+                        help='Latency of print during trainning')
     parser.add_argument('--gpu', nargs='?', const=True, default=False,
                         help="Call this option to use GPU processing")
-    parser.add_argument('--save_state_file', type = str, default = 'Auto',
+    parser.add_argument('--save_state_file', type = str, default = 'checkpoint.pth',
                         help='prevent saving model state')
-    parser.add_argument('--no_train', nargs='?', const=True, default=False, 
+    parser.add_argument('--no_train', nargs='?', const=True, default=False,
                         help='use not to train parameters')
-    parser.add_argument('--load_state_file', type=str, default=None,
+    parser.add_argument('--load_state_file', type=str, default='checkpoint.pth',
                         help='specify state file to load')
 
     return parser.parse_args()

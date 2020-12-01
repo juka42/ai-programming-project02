@@ -11,6 +11,8 @@ import torch
 from torch import optim
 import torch.nn.functional as F
 from torch import nn
+from datetime import date
+
 
 import numpy as np
 
@@ -49,19 +51,34 @@ model.to(device)
 #########################
 # load model
 if args.load_state_file != None:
+    print('\nloading model')
     model.classifier = load_checkpoint(args)
-
+    loss, accuracy = calculate_accuracy(model, testloader, device)
+    print('\nTest performance just loaded:')
+    print(f'Test loss = {loss} Test accuracy {accuracy}\n')
 
 ##########################
 # train model
 if not args.no_train:
     print('#### Train model ####')
     train_model(args, model, trainloader, validloader, device, verbosity = args.verbosity)
-    
+
     ########################
     ### Save the checkpoint
-    if args.save_state_file != 'None':
+    if args.save_state_file == 'auto':
+        ac = str(int(test_accuracy*100))
+        dt = str(date.today())
+
+        state_file_path = 'checkpoint_' + pretrained + '_ac' + ac + '_'+ dt +'.pth'
+        args.save_state_file = state_file_path
+        print(f'\n######\n {args.save_state_file} \n##########\n')
         save_estate(model.classifier, classif_arch, args)
+    elif args.save_state_file != 'none':
+        print(f'\nsaving file: {args.save_state_file}\n')
+        save_estate(model.classifier, classif_arch, args)
+    else:
+        print('#####\nstate not saved\n##########\n')
+
 else:
     print("Note: Not training model parameters")
 
